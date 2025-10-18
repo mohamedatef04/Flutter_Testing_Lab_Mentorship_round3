@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_testing_lab/models/shopping_cart_model.dart';
 import 'package:flutter_testing_lab/widgets/shopping_cart.dart';
 import 'package:flutter_testing_lab/widgets/user_registration_form.dart';
 import 'package:flutter_testing_lab/widgets/weather_display.dart';
@@ -10,7 +11,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _currentIndex = 0;
 
@@ -20,15 +22,22 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     const Tab(icon: Icon(Icons.wb_sunny), text: 'Weather'),
   ];
 
-  final List<Widget> _tabViews = [
-    const UserRegistrationForm(),
-    const ShoppingCart(),
-    const WeatherDisplay(),
-  ];
+  late final ShoppingCartModel _cartModel;
+
+  late List<Widget> _tabViews;
 
   @override
   void initState() {
     super.initState();
+
+    _cartModel = ShoppingCartModel();
+
+    _tabViews = [
+      const UserRegistrationForm(),
+      ShoppingCartWidget(model: _cartModel),
+      const WeatherDisplay(),
+    ];
+
     _tabController = TabController(length: _tabs.length, vsync: this);
     _tabController.addListener(() {
       setState(() {
@@ -67,10 +76,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.grey.shade50,
-              Colors.grey.shade100,
-            ],
+            colors: [Colors.grey.shade50, Colors.grey.shade100],
           ),
         ),
         child: Column(
@@ -86,11 +92,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.warning,
-                    color: Colors.orange.shade700,
-                    size: 20,
-                  ),
+                  Icon(Icons.warning, color: Colors.orange.shade700, size: 20),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -123,9 +125,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.blue.shade50,
-          border: Border(
-            top: BorderSide(color: Colors.blue.shade200),
-          ),
+          border: Border(top: BorderSide(color: Colors.blue.shade200)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -147,10 +147,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             const SizedBox(height: 4),
             Text(
               'Switch between tabs to test different widgets',
-              style: TextStyle(
-                color: Colors.blue.shade600,
-                fontSize: 12,
-              ),
+              style: TextStyle(color: Colors.blue.shade600, fontSize: 12),
             ),
           ],
         ),
